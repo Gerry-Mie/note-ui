@@ -4,9 +4,10 @@ import {ApiResponse} from "../types/response.ts";
 import {Note} from "../types/notes.ts";
 import CreateNote from "../components/pages/note/create-note.tsx";
 import {useState} from "react";
-import {getFirebaseToken} from "../config/firebase.ts";
+import {auth, getFirebaseToken} from "../config/firebase.ts";
 import {showNotification} from "@mantine/notifications";
 import NoteItem from "../components/pages/note/note-item.tsx";
+import {signOut} from 'firebase/auth'
 
 const Notes = () => {
     const [page, setPage] = useState(1)
@@ -25,11 +26,16 @@ const Notes = () => {
         }
     }
 
+    const logout = () => signOut(auth)
+
     return (
         <Box>
             <Group justify={'space-between'}>
                 <CreateNote onSaved={notes.refetch}/>
+                <Group gap={10}>
                 <Button onClick={copyToken}>Copy Token</Button>
+                    <Button onClick={logout}>Sign out</Button>
+                </Group>
             </Group>
             <Stack gap={10} mt={10}>
                 {
